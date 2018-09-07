@@ -1,0 +1,8 @@
+- hosts: god
+  vars_files:
+    - secrets.yml
+  roles:
+    - common
+    - docker
+    - chest
+    - chest_samba

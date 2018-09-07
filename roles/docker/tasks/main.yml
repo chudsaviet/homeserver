@@ -1,0 +1,22 @@
+- name: Install packages for Docker repo
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+- name: Install Docker repo key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+- name: Add Docker repository
+  apt_repository:
+    repo: "deb [arch={{ arch }}] https://download.docker.com/linux/ubuntu {{ apt_release }} stable"
+- name: Install Docker
+  apt:
+    name: docker-ce
+    update_cache: yes
+- name: Install Python Docker module
+  pip:
+    name: docker

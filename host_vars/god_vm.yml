@@ -1,0 +1,8 @@
+---
+ansible_host: localhost
+ansible_port: 3712
+ansible_user: "{{ god_vm.user_name }}"
+ansible_become: true
+ansible_become_pass: "{{ god_vm.user_password }}"
+arch: amd64
+apt_release: bionic

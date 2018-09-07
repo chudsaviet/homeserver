@@ -1,0 +1,11 @@
+---
+- name: Create 'chest' mountpoint
+  file: path="{{ chest.local_path }}" state=directory
+- name: Mount 'chest' partition
+  mount:
+    path: "{{ chest.local_path }}"
+    src: UUID="{{ chest_secrets.partition_uuid }}"
+    fstype: ext4
+    opts: noatime
+    state: mounted
+ 
