@@ -4,7 +4,7 @@
 - name: Mount 'chest' partition
   mount:
     path: "{{ chest.local_path }}"
-    src: UUID="{{ chest_secrets.partition_uuid }}"
+    src: UUID="{{ chest_uuid }}"
     fstype: ext4
     opts: noatime
     state: mounted

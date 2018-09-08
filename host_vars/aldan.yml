@@ -1,0 +1,8 @@
+---
+ansible_host: aldan.homeunix.by
+ansible_port: 22
+ansible_user: "{{ aldan.user_name }}"
+ansible_become: true
+ansible_become_pass: "{{ aldan.user_password }}"
+host_arch: amd64
+chest_uuid: "{{ chest_secrets.uuid }}"
