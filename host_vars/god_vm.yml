@@ -5,4 +5,4 @@ ansible_user: "{{ god_vm.user_name }}"
 ansible_become: true
 ansible_become_pass: "{{ god_vm.user_password }}"
 host_arch: amd64
-chest_uuid: 3ed3e493-fbe9-48bb-8112-bd0147df9ff2
+chest_uuid: "3ed3e493-fbe9-48bb-8112-bd0147df9ff2"

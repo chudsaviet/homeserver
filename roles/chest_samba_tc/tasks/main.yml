@@ -1,0 +1,39 @@
+- name: Create Time Capsule directory
+  file:
+    path: "{{ chest.local_path }}/{{ chest.time_capsule_dir }}"
+    state: directory
+    mode: "a+rwx"
+- name: Install Samba server container
+  docker_container:
+    name: samba_share
+    image: chudsaviet/samba
+    pull: yes
+    restart_policy: always
+    network_mode: host
+    volumes:
+    - "{{ chest.local_path }}:{{ chest.local_path }}:rw"
+    command:
+    - samba.sh
+    - -s "chest;{{ chest.local_path }};yes;no;no;{{ samba_secrets.shared_user }}"
+    - -s "{{ chest.time_capsule_dir }};{{ chest.local_path }}/{{ chest.time_capsule_dir }};yes;no;no;{{ samba_secrets.tc_user }}"
+    - -u "{{ samba_secrets.tc_user }};{{ samba_secrets.tc_password }}"
+    - -u "{{ samba_secrets.shared_user }};{{ samba_secrets.shared_password }}"
+- name: Create avahi services directory
+  file:
+    path: "{{ avahi_services_dir }}"
+    state: directory
+    mode: "a+rwx"
+- name: Put Avahi service file
+  template:
+    src: "{{ role_path }}/files/time_capsule.service.j2"
+    dest: "{{ avahi_services_dir }}/time_capsule.service"
+- name: Install Avahi container
+  docker_container:
+    name: avahi_time_capsule
+    image: chudsaviet/avahi-light
+    pull: yes
+    restart_policy: always
+    network_mode: host
+    published_ports: 5353
+    volumes:
+    - "{{ avahi_services_dir }}:/etc/avahi/services:ro"

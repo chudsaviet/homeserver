@@ -1,6 +1,9 @@
 ---
 - name: Create 'chest' mountpoint
-  file: path="{{ chest.local_path }}" state=directory
+  file:
+    path: "{{ chest.local_path }}"
+    state: directory
+    mode: "a+rwx"
 - name: Mount 'chest' partition
   mount:
     path: "{{ chest.local_path }}"

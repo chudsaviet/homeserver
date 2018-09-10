@@ -1,2 +1,3 @@
 chest:
   local_path: "/media/chest"
+  time_capsule_dir: "time_capsule"
