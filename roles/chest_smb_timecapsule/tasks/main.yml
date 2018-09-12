@@ -1,6 +1,6 @@
 - name: Create Time Capsule directory
   file:
-    path: "{{ chest.local_path }}/{{ chest.time_capsule_dir }}"
+    path: "{{ timecapsule.local_path }}"
     state: directory
     mode: "a+rwx"
 - name: Install Samba server container
@@ -15,7 +15,7 @@
     command:
     - samba.sh
     - -s "chest;{{ chest.local_path }};yes;no;no;{{ samba_secrets.shared_user }}"
-    - -s "{{ chest.time_capsule_dir }};{{ chest.local_path }}/{{ chest.time_capsule_dir }};yes;no;no;{{ samba_secrets.tc_user }}"
+    - -s "{{ timecapsule.share_name }};{{ timecapsule.local_path }};yes;no;no;{{ samba_secrets.tc_user }}"
     - -u "{{ samba_secrets.tc_user }};{{ samba_secrets.tc_password }}"
     - -u "{{ samba_secrets.shared_user }};{{ samba_secrets.shared_password }}"
 - name: Create avahi services directory

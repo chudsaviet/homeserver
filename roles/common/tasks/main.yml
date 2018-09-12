@@ -1,5 +1,5 @@
 ---
-- name: Install sources.list for Ubuntu
+- name: Install sources.list for Apt
   template:
     src: "{{ role_path }}/files/{{ ansible_distribution }}.sources.list.j2"
     dest: /etc/apt/sources.list
