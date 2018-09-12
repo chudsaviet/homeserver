@@ -1,0 +1,13 @@
+- name: Install chrony
+  apt:
+    name: chrony
+    update_cache: yes
+- name: Put chrony config file
+  template:
+    src: "{{ role_path }}/files/chrony.conf.j2"
+    dest: "/etc/chrony/chrony.conf"
+- name: Restart chrony
+  service:
+    name: chrony
+    enabled: yes
+    state: restarted

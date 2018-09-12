@@ -3,6 +3,7 @@
     - secrets.yml
   roles:
     - common
+    - chrony
     - docker
     - chest
     - chest_smb_timecapsule

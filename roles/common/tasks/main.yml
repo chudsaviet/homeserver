@@ -1,4 +1,8 @@
 ---
+- name: Set timezone
+  timezone:
+    hwclock: UTC
+    name: America/Los_Angeles
 - name: Install sources.list for Apt
   template:
     src: "{{ role_path }}/files/{{ ansible_distribution }}.sources.list.j2"

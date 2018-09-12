@@ -1,0 +1,25 @@
+pool 0.us.pool.ntp.org iburst maxsources 1
+pool 1.us.pool.ntp.org iburst maxsources 1
+pool 2.us.pool.ntp.org iburst maxsources 1
+pool 3.us.pool.ntp.org iburst maxsources 1
+pool 2.eu.pool.ntp.org iburst maxsources 1
+pool 2.asia.pool.ntp.org iburst maxsources 1
+pool 1.ru.pool.ntp.org iburst maxsources 1
+pool 0.by.pool.ntp.org iburst maxsources 1
+
+server ntp3.vniiftri.ru iburst
+server time-b-g.nist.gov iburst
+server time-c-b.nist.gov iburst
+server time-c-wwv.nist.gov iburst
+
+keyfile /etc/chrony/chrony.keys
+
+driftfile /var/lib/chrony/chrony.drift
+
+logdir /var/log/chrony
+
+maxupdateskew 100.0
+
+rtcsync
+
+makestep 1 3
