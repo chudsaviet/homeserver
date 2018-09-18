@@ -5,5 +5,5 @@
 HOMEHOST <system>
 
 # instruct the monitoring daemon where to send mail alerts
-MAILADDR aldan@homeunix.by
-MAILFROM aldan@homeunix.by
+MAILADDR {{ email.notify }}
+MAILFROM {{ email.from }}
