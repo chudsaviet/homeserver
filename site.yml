@@ -4,6 +4,7 @@
   roles:
     - common
     - chrony
+    - mail_sender
     - docker
     - chest
     - chest_smb_timecapsule
