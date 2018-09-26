@@ -32,6 +32,7 @@
       TZ: "{{ common.timezone }}"
     volumes:
       - "{{ chest.services_path }}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "{{ chest.services_path }}/nginx/dhparam.pem:/etc/nginx/dhparam.pem:ro"
       - "{{ chest.services_path }}/nginx/htpasswd:/etc/nginx/htpasswd:ro"
       - "{{ chest.services_path }}/nginx/cache:/tmp/nginx/cache:rw"
       - "{{ certbot_dir }}:/etc/letsencrypt:ro"
