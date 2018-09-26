@@ -1,0 +1,59 @@
+user root root;
+
+events {
+}
+
+http {
+  log_format upstreamlog  '[$time_local] $remote_addr - $remote_user - $server_name  to: $upstream_addr: $request upstream_response_time $upstream_response_time msec $msec request_time $request_time';
+  proxy_cache_path        /tmp/nginx/cache levels=1:2 keys_zone=backcache:8m max_size=50m;
+
+
+  server {
+    listen        80;
+    listen        443 ssl http2;
+    server_name   {{ unifi_controller.server_name }};
+
+    ssl_certificate /etc/letsencrypt/live/{{ unifi_controller.server_name }}/cert.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ unifi_controller.server_name }}/privkey.pem;
+
+    auth_basic           "Homeunix Shelter Unifi";
+    auth_basic_user_file /etc/nginx/htpasswd;
+
+    resolver                127.0.0.11 ipv6=off;
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        Referer "";
+    
+    location /wss {
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "Upgrade";
+      proxy_pass https://{{ unifi_container_name }}:8443$request_uri;
+
+      proxy_buffering on;
+      proxy_buffer_size 1k;
+      proxy_buffers 24 4k;
+      proxy_busy_buffers_size 8k;
+      proxy_max_temp_file_size 2048m;
+      proxy_temp_file_write_size 32k;
+
+      proxy_cache_key         "$scheme$request_method$host$request_uri$is_args$args";
+      proxy_cache_valid       200 302 10m;
+      proxy_cache_valid       404 1m;
+    }
+
+    location / {
+      proxy_pass https://{{ unifi_container_name }}:8443$request_uri;
+
+      proxy_buffering on;
+      proxy_buffer_size 1k;
+      proxy_buffers 24 4k;
+      proxy_busy_buffers_size 8k;
+      proxy_max_temp_file_size 2048m;
+      proxy_temp_file_write_size 32k;
+
+      proxy_cache_key         "$scheme$request_method$host$request_uri$is_args$args";
+      proxy_cache_valid       200 302 10m;
+      proxy_cache_valid       404 1m;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+- name: Create Unifi group
+  group:
+    name: "{{ unifi_controller.group_name }}"
+    gid: "{{ unifi_controller.gid }}"
+- name: Create Unifi user
+  user:
+    name: "{{ unifi_controller.user_name }}"
+    comment: Unifi controller user
+    uid: "{{ unifi_controller.uid }}"
+    group: "{{ unifi_controller.group_name }}"
+    update_password: always
+    create_home: no
+- name: Create Unifi directory
+  file:
+    path: "{{ chest.services_path }}/unifi"
+    state: directory
+    owner: "{{ unifi_controller.user_name }}"
+    group: "{{ unifi_controller.group_name }}"
+- name: Start Unifi container
+  docker_container:
+    name: "{{ unifi_container_name }}"
+    image: jacobalberty/unifi:latest
+    pull: yes
+    restart_policy: always
+    purge_networks: yes
+    networks:
+      - name: "{{ unifi_network }}"
+    published_ports:
+      - 8080:8080/tcp # Device command/control
+    env:
+      TZ: "{{ common.timezone }}"
+    volumes:
+      - "{{ chest.services_path }}/unifi:/unifi:rw"

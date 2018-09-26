@@ -1,0 +1,8 @@
+- name: Create a Unifi network
+  docker_network:
+    name: "{{ unifi_network }}"
+    driver: bridge
+- name: Create a Nginx network
+  docker_network:
+    name: "{{ nginx_network }}"
+    driver: bridge

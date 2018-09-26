@@ -1,0 +1,6 @@
+unifi_container_name: unifi
+unifi_network: unifi
+nginx_network: nginx
+certbot_dir: "{{ chest.services_path }}/certbot"
+home_portal_cert: home_portal
+unifi_cert: unifi_shelter_homeunix_by

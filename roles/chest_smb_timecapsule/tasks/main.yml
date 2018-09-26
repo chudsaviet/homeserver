@@ -10,14 +10,16 @@
     pull: yes
     restart_policy: always
     network_mode: host
+    env:
+      TZ: "{{ common.timezone }}"
     volumes:
-    - "{{ chest.local_path }}:{{ chest.local_path }}:rw"
+      - "{{ chest.local_path }}:{{ chest.local_path }}:rw"
     command:
-    - samba.sh
-    - -s "chest;{{ chest.local_path }};yes;no;no;{{ samba_secrets.shared_user }}"
-    - -s "{{ timecapsule.share_name }};{{ timecapsule.local_path }};yes;no;no;{{ samba_secrets.tc_user }}"
-    - -u "{{ samba_secrets.tc_user }};{{ samba_secrets.tc_password }}"
-    - -u "{{ samba_secrets.shared_user }};{{ samba_secrets.shared_password }}"
+      - samba.sh
+      - -s "chest;{{ chest.local_path }};yes;no;no;{{ samba_secrets.shared_user }}"
+      - -s "{{ timecapsule.share_name }};{{ timecapsule.local_path }};yes;no;no;{{ samba_secrets.tc_user }}"
+      - -u "{{ samba_secrets.tc_user }};{{ samba_secrets.tc_password }}"
+      - -u "{{ samba_secrets.shared_user }};{{ samba_secrets.shared_password }}"
 - name: Create avahi services directory
   file:
     path: "{{ avahi_services_dir }}"
