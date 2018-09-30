@@ -26,8 +26,8 @@
   stat:
     path: "{{ nginx_sec_dir}}/dhparam.pem"
   register: dhparam
-- name: Generate Diffie-Hellman key
-  command: "openssl dhparam -out {{ nginx_sec_dir}}/dhparam.pem 2048"
+- name: Generate Diffie-Hellman key (it can take up to 30 minutes)
+  command: "openssl dhparam -out {{ nginx_sec_dir}}/dhparam.pem 4096"
   when: not dhparam.stat.exists
 - name: Put htpasswd
   template:

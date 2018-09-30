@@ -27,6 +27,7 @@
       - name: "{{ unifi_network }}"
     published_ports:
       - 8080:8080/tcp # Device command/control
+      - 3478:3478/udp # STUN protocol
     env:
       TZ: "{{ common.timezone }}"
     volumes:
