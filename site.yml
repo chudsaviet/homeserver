@@ -2,7 +2,7 @@
   vars_files:
     - secrets.yml
   roles:
-    - common
-    - chest
-    - home_assistant
-    - home_portal
+    - {role: 'common', tags: 'common'}
+    - {role: 'chest', tags: 'chest'}
+    - {role: 'home_assistant', tags: 'home_assistant'}
+    - {role: 'home_portal', tags: 'home_portal'}
