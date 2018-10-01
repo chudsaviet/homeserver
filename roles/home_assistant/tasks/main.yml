@@ -1,0 +1,2 @@
+---
+- include: hass_core.yml

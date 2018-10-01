@@ -1,0 +1,21 @@
+- name: Install mdadm
+  apt:
+    name: mdadm
+    update_cache: yes
+- name: Put mdadm config
+  template:
+    src: "templates/mdadm.conf.j2"
+    dest: "/etc/mdadm/mdadm.conf"
+  register: mdadm_config
+- name: Update initramfs
+  command: update-initramfs -u
+  when: mdadm_config is changed
+- name: Enable and restart mdadm service
+  service:
+    name: mdmonitor
+    enabled: yes
+    state: restarted
+- name: Creates a cron entry to check all RAID arrays on a schedule
+  template:
+    src: "templates/cron_mdadm.j2"
+    dest: "/etc/cron.d/mdadm"

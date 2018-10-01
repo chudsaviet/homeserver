@@ -1,10 +1,14 @@
+- name: Set timezone
+  timezone:
+    hwclock: UTC
+    name: "{{ common.timezone }}"
 - name: Install chrony
   apt:
     name: chrony
     update_cache: yes
 - name: Put chrony config file
   template:
-    src: "{{ role_path }}/files/chrony.conf.j2"
+    src: "templates/chrony.conf.j2"
     dest: "/etc/chrony/chrony.conf"
 - name: Restart chrony
   service:

@@ -1,10 +1,10 @@
-- name: Install msmtp
+- name: Install msmtp MTA
   apt:
     name:
       - msmtp
       - msmtp-mta
     update_cache: yes
-- name: Put msmtp config file
+- name: Put msmtp MTA config file
   template:
-    src: "{{ role_path }}/files/msmtprc.j2"
+    src: "templates/msmtprc.j2"
     dest: "/etc/msmtprc"

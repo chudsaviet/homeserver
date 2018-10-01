@@ -1,0 +1,26 @@
+- name: Create Home Assistant directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+  with_items:
+    - "{{ hass.conf_dir }}"
+- name: Create a Home Assistant network
+  docker_network:
+    name: "{{ hass.network }}"
+    driver: bridge
+- name: Start Home Assistant container
+  docker_container:
+    name: hass
+    image: homeassistant/home-assistant:latest
+    pull: yes
+    recreate: yes
+    restart_policy: always
+    user: "root:root"
+    networks:
+      - name: "{{ hass.network }}"
+    env:
+      TZ: "{{ common.timezone }}"
+    volumes:
+      - "{{ hass.conf_dir }}/:/etc/hass/:rw"

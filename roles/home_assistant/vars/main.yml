@@ -1,0 +1,3 @@
+hass:
+  network: hass
+  conf_dir: "{{ chest.services_path }}/hass/conf"

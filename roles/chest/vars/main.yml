@@ -1,3 +1,7 @@
 chest:
   local_path: "/media/chest"
   services_path: "/media/chest/srv"
+timecapsule:
+  local_path: "{{ chest.local_path }}/time_capsule"
+  share_name: time_capsule
+avahi_services_dir: /opt/avahi-timecapsule

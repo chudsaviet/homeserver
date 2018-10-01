@@ -1,0 +1,5 @@
+- name: Enable and restart cron
+  service:
+    name: cron
+    enabled: yes
+    state: restarted

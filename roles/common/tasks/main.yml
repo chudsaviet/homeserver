@@ -1,19 +1,6 @@
 ---
-- name: Set timezone
-  timezone:
-    hwclock: UTC
-    name: "{{ common.timezone }}"
-- name: Install sources.list for Apt
-  template:
-    src: "{{ role_path }}/files/{{ ansible_distribution }}.sources.list.j2"
-    dest: /etc/apt/sources.list
-- name: Upgrade all packages to the latest version
-  apt:
-    name: "*"
-    state: latest
-    update_cache: yes
-    force_apt_get: yes
-- name: Install pip3
-  apt:
-    name: python3-pip
-    update_cache: yes
+- include: apt.yml
+- include: time.yml
+- include: mail.yml
+- include: cron.yml
+- include: docker.yml

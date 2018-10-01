@@ -1,0 +1,14 @@
+- name: Install sources.list for Apt
+  template:
+    src: "templates/{{ ansible_distribution }}.sources.list.j2"
+    dest: /etc/apt/sources.list
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
+- name: Install pip3
+  apt:
+    name: python3-pip
+    update_cache: yes

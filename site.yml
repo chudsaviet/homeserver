@@ -3,9 +3,6 @@
     - secrets.yml
   roles:
     - common
-    - chrony
-    - mail_sender
-    - docker
     - chest
-    - chest_smb_timecapsule
+    - home_assistant
     - home_portal

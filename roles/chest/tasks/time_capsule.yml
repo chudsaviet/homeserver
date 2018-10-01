@@ -1,0 +1,24 @@
+- name: Create Time Capsule directory
+  file:
+    path: "{{ timecapsule.local_path }}"
+    state: directory
+    mode: "a+rwx"
+- name: Create avahi services directory
+  file:
+    path: "{{ avahi_services_dir }}"
+    state: directory
+    mode: "a+rwx"
+- name: Put Avahi service file
+  template:
+    src: "templates/time_capsule.service.j2"
+    dest: "{{ avahi_services_dir }}/time_capsule.service"
+- name: Install Avahi container
+  docker_container:
+    name: avahi_time_capsule
+    image: chudsaviet/avahi-light
+    pull: yes
+    restart_policy: always
+    network_mode: host
+    published_ports: 5353
+    volumes:
+    - "{{ avahi_services_dir }}:/etc/avahi/services:ro"
