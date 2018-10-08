@@ -4,4 +4,4 @@ chest:
 timecapsule:
   local_path: "{{ chest.local_path }}/time_capsule"
   share_name: time_capsule
-avahi_services_dir: /opt/avahi-timecapsule
+  avahi_dir: "{{ common.services_path }}/avahi-timecapsule"

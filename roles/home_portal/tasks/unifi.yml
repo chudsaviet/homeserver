@@ -1,21 +1,21 @@
 - name: Create Unifi group
   group:
-    name: "{{ unifi_controller.group_name }}"
-    gid: "{{ unifi_controller.gid }}"
+    name: "{{ secrets.unifi_controller.group_name }}"
+    gid: "{{ secrets.unifi_controller.gid }}"
 - name: Create Unifi user
   user:
-    name: "{{ unifi_controller.user_name }}"
+    name: "{{ secrets.unifi_controller.user_name }}"
     comment: Unifi controller user
-    uid: "{{ unifi_controller.uid }}"
-    group: "{{ unifi_controller.group_name }}"
+    uid: "{{ secrets.unifi_controller.uid }}"
+    group: "{{ secrets.unifi_controller.group_name }}"
     update_password: always
     create_home: no
 - name: Create Unifi directory
   file:
     path: "{{ chest.services_path }}/unifi"
     state: directory
-    owner: "{{ unifi_controller.user_name }}"
-    group: "{{ unifi_controller.group_name }}"
+    owner: "{{ secrets.unifi_controller.user_name }}"
+    group: "{{ secrets.unifi_controller.group_name }}"
 - name: Start Unifi container
   docker_container:
     name: "{{ unifi_container_name }}"

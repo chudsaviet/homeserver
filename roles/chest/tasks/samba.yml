@@ -1,8 +1,3 @@
-- name: Create Time Capsule directory
-  file:
-    path: "{{ timecapsule.local_path }}"
-    state: directory
-    mode: "a+rwx"
 - name: Install Samba server container
   docker_container:
     name: samba_share
@@ -16,7 +11,7 @@
       - "{{ chest.local_path }}:{{ chest.local_path }}:rw"
     command:
       - samba.sh
-      - -s "chest;{{ chest.local_path }};yes;no;no;{{ samba_secrets.shared_user }}"
-      - -s "{{ timecapsule.share_name }};{{ timecapsule.local_path }};yes;no;no;{{ samba_secrets.tc_user }}"
-      - -u "{{ samba_secrets.tc_user }};{{ samba_secrets.tc_password }}"
-      - -u "{{ samba_secrets.shared_user }};{{ samba_secrets.shared_password }}"
+      - -s "chest;{{ chest.local_path }};yes;no;no;{{ secrets.samba.shared_user }}"
+      - -s "{{ timecapsule.share_name }};{{ timecapsule.local_path }};yes;no;no;{{ secrets.samba.tc_user }}"
+      - -u "{{ secrets.samba.tc_user }};{{ secrets.samba.tc_password }}"
+      - -u "{{ secrets.samba.shared_user }};{{ secrets.samba.shared_password }}"

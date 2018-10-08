@@ -1,9 +1,9 @@
 unifi_container_name: unifi
 unifi_network: unifi
 nginx_network: nginx
-nginx_conf_dir: "{{ chest.services_path }}/nginx/conf"
-nginx_sec_dir: "{{ chest.services_path }}/nginx/sec"
+nginx_conf_dir: "{{ common.services_path }}/nginx/conf"
+nginx_sec_dir: "{{ common.services_path }}/nginx/sec"
 nginx_cache_dir: "/var/lib/nginx/cache"
-certbot_dir: "{{ chest.services_path }}/certbot"
+certbot_dir: "{{ common.services_path }}/certbot"
 home_portal_cert: home_portal
 unifi_cert: unifi_shelter_homeunix_by
