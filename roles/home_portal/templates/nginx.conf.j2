@@ -14,5 +14,6 @@ http {
     return 301 https://$host$request_uri;
   }
 
+  # include shelter.conf;
   include unifi.conf;
 }

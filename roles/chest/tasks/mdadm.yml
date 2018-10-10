@@ -19,3 +19,10 @@
   template:
     src: "templates/cron_mdadm.j2"
     dest: "/etc/cron.d/mdadm"
+- name: Create standard directories
+  file: 
+    name: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ chest.services_path }}"
+    - "{{ chest.archive_path }}"

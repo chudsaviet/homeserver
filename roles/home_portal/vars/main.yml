@@ -1,9 +1,15 @@
-unifi_container_name: unifi
-unifi_network: unifi
-nginx_network: nginx
-nginx_conf_dir: "{{ common.services_path }}/nginx/conf"
-nginx_sec_dir: "{{ common.services_path }}/nginx/sec"
-nginx_cache_dir: "/var/lib/nginx/cache"
-certbot_dir: "{{ common.services_path }}/certbot"
-home_portal_cert: home_portal
-unifi_cert: unifi_shelter_homeunix_by
+unifi:
+  container_name: unifi
+  container_image: "jacobalberty/unifi:5.6"
+  network: unifi
+  path: "{{ chest.services_path }}/unifi"
+  archive_path: "{{ chest.archive_path }}/unifi"
+nginx:
+  network: nginx
+  conf_dir: "{{ common.services_path }}/nginx/conf"
+  sec_dir: "{{ common.services_path }}/nginx/sec"
+  cache_dir: "{{ common.services_path }}/nginx/cache"
+certbot:
+  dir: "{{ common.services_path }}/certbot"
+  shelter_cert: home_portal
+  unifi_cert: unifi_shelter_homeunix_by

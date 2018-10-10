@@ -1,6 +1,7 @@
 chest:
   local_path: "/media/chest"
   services_path: "/media/chest/srv"
+  archive_path: "/media/chest/archive"
 timecapsule:
   local_path: "{{ chest.local_path }}/time_capsule"
   share_name: time_capsule

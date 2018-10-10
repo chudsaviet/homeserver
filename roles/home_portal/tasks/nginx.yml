@@ -2,7 +2,7 @@
 - name: Clean and remove Nginx config directory
   file:
     state: absent
-    path: "{{ nginx_conf_dir }}"
+    path: "{{ nginx.conf_dir }}"
 - name: Create Nginx directories
   file:
     path: "{{ item }}"
@@ -10,29 +10,30 @@
     owner: root
     group: root
   with_items:
-    - "{{ nginx_conf_dir }}"
-    - "{{ nginx_sec_dir }}"
-    - "{{ nginx_cache_dir }}"
+    - "{{ nginx.conf_dir }}"
+    - "{{ nginx.sec_dir }}"
+    - "{{ nginx.cache_dir }}"
 - name: Put Nginx configuration files
   template: 
     src: "{{ role_path }}/templates/{{ item }}.conf.j2"
-    dest: "{{ nginx_conf_dir }}/{{ item }}.conf"
+    dest: "{{ nginx.conf_dir }}/{{ item }}.conf"
   with_items:
     - nginx
     - ssl
     - proxy
+    - shelter
     - unifi
 - name: Check existence of Diffie-Hellman key
   stat:
-    path: "{{ nginx_sec_dir}}/dhparam.pem"
+    path: "{{ nginx.sec_dir}}/dhparam.pem"
   register: dhparam
 - name: Generate Diffie-Hellman key (it can take up to 30 minutes)
-  command: "openssl dhparam -out {{ nginx_sec_dir}}/dhparam.pem 4096"
+  command: "openssl dhparam -out {{ nginx.sec_dir}}/dhparam.pem 4096"
   when: not dhparam.stat.exists
 - name: Put htpasswd
   template:
     src: "{{ role_path }}/templates/htpasswd.j2"
-    dest: "{{ nginx_sec_dir}}/htpasswd"
+    dest: "{{ nginx.sec_dir}}/htpasswd"
 - name: Start Nginx container
   docker_container:
     name: nginx
@@ -42,15 +43,15 @@
     restart_policy: always
     user: "root:root"
     networks:
-      - name: "{{ nginx_network }}"
-      - name: "{{ unifi_network }}"
+      - name: "{{ nginx.network }}"
+      - name: "{{ unifi.network }}"
     published_ports:
       - "80:80"
       - "443:443"
     env:
       TZ: "{{ common.timezone }}"
     volumes:
-      - "{{ nginx_conf_dir }}/:/etc/nginx/:ro"
-      - "{{ nginx_cache_dir }}/:/var/lib/nginx/cache:rw"
-      - "{{ nginx_sec_dir }}/:/etc/nginx_sec:ro"
-      - "{{ certbot_dir }}:/etc/letsencrypt:ro"
+      - "{{ nginx.conf_dir }}/:/etc/nginx/:ro"
+      - "{{ nginx.cache_dir }}/:/var/lib/nginx/cache:rw"
+      - "{{ nginx.sec_dir }}/:/etc/nginx_sec:ro"
+      - "{{ certbot.dir }}:/etc/letsencrypt:ro"

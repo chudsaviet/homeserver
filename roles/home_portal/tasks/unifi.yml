@@ -1,34 +1,55 @@
 - name: Create Unifi group
   group:
-    name: "{{ secrets.unifi_controller.group_name }}"
-    gid: "{{ secrets.unifi_controller.gid }}"
+    name: "{{ secrets.unifi.group_name }}"
+    gid: "{{ secrets.unifi.gid }}"
 - name: Create Unifi user
   user:
-    name: "{{ secrets.unifi_controller.user_name }}"
+    name: "{{ secrets.unifi.user_name }}"
     comment: Unifi controller user
-    uid: "{{ secrets.unifi_controller.uid }}"
-    group: "{{ secrets.unifi_controller.group_name }}"
+    uid: "{{ secrets.unifi.uid }}"
+    group: "{{ secrets.unifi.group_name }}"
     update_password: always
     create_home: no
 - name: Create Unifi directory
   file:
-    path: "{{ chest.services_path }}/unifi"
+    path: "{{ unifi.path }}"
     state: directory
-    owner: "{{ secrets.unifi_controller.user_name }}"
-    group: "{{ secrets.unifi_controller.group_name }}"
-- name: Start Unifi container
+    owner: "{{ secrets.unifi.user_name }}"
+    group: "{{ secrets.unifi.group_name }}"
+- name: Create Unifi archive directory
+  file:
+    path: "{{ unifi.archive_path }}"
+    state: directory
+- name: Create and start UniFi container
   docker_container:
-    name: "{{ unifi_container_name }}"
-    image: jacobalberty/unifi:latest
-    pull: yes
-    restart_policy: always
+    name: "{{ unifi.container_name }}"
+    image: "{{ unifi.container_image }}"
     purge_networks: yes
     networks:
-      - name: "{{ unifi_network }}"
+      - name: "{{ unifi.network }}"
     published_ports:
       - 8080:8080/tcp # Device command/control
       - 3478:3478/udp # STUN protocol
     env:
       TZ: "{{ common.timezone }}"
     volumes:
-      - "{{ chest.services_path }}/unifi:/unifi:rw"
+      - "{{ unifi.path }}:/unifi:rw"
+- name: Pull new UniFi image
+  docker_image:
+    name: "{{ unifi.container_image }}"
+  register: unifi_image
+- name: Stop UniFi container if new image is present
+  docker_container:
+    name: "{{ unifi.container_name }}"
+    state: stopped
+  ignore_errors: yes
+  when: unifi_image is changed
+- name: Backup UniFi if new image is present
+  shell: "tar cvf - {{ unifi.path }} | xz -T 0 > {{ unifi.archive_path }}/unifi-$(date +'%Y%m%d%H%m%S').tar.xz"
+  when: unifi_image is changed
+- name: Restart UniFi container if new image is present
+  docker_container:
+    name: "{{ unifi.container_name }}"
+    state: started
+  ignore_errors: yes
+  when: unifi_image is changed
