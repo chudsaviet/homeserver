@@ -3,6 +3,7 @@ unifi:
   container_image: "jacobalberty/unifi:5.6"
   network: unifi
   path: "{{ chest.services_path }}/unifi"
+  run_dir_path: "{{ common.services_path }}/unifi_run"
   archive_path: "{{ chest.archive_path }}/unifi"
 nginx:
   network: nginx

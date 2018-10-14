@@ -16,6 +16,15 @@
     state: directory
     owner: "{{ secrets.unifi.user_name }}"
     group: "{{ secrets.unifi.group_name }}"
+- name: Create Unifi run directories
+  file:
+    path: "{{ unifi.run_dir_path }}/{{ item }}"
+    state: directory
+    owner: "{{ secrets.unifi.user_name }}"
+    group: "{{ secrets.unifi.group_name }}"
+  with_items:
+    - var
+    - usr 
 - name: Create Unifi archive directory
   file:
     path: "{{ unifi.archive_path }}"
@@ -24,6 +33,7 @@
   docker_container:
     name: "{{ unifi.container_name }}"
     image: "{{ unifi.container_image }}"
+    user: "{{ secrets.unifi.uid }}:{{ secrets.unifi.gid }}"
     purge_networks: yes
     networks:
       - name: "{{ unifi.network }}"
@@ -31,9 +41,15 @@
       - 8080:8080/tcp # Device command/control
       - 3478:3478/udp # STUN protocol
     env:
+      RUNAS_UID0: false
+      UNIFI_UID: "{{ secrets.unifi.uid }}"
+      UNIFI_GID: "{{ secrets.unifi.gid }}"
+      BIND_PRIV: false
       TZ: "{{ common.timezone }}"
     volumes:
       - "{{ unifi.path }}:/unifi:rw"
+      - "{{ unifi.run_dir_path }}/usr:/usr/lib/unifi/run:rw"
+      - "{{ unifi.run_dir_path }}/var:/var/run/unifi:rw"
 - name: Pull new UniFi image
   docker_image:
     name: "{{ unifi.container_image }}"
