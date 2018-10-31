@@ -1,0 +1,49 @@
+- name: Create Letsencrypt group
+  group:
+    name: "{{ secrets.letsencrypt.group_name }}"
+    gid: "{{ secrets.letsencrypt.gid }}"
+- name: Create Letsencrypt user
+  user:
+    name: "{{ secrets.letsencrypt.user_name }}"
+    comment: Letsencrypt controller user
+    uid: "{{ secrets.letsencrypt.uid }}"
+    group: "{{ secrets.letsencrypt.group_name }}"
+    update_password: always
+    create_home: no
+- name: Create Letsencrypt directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ secrets.letsencrypt.user_name }}"
+    group: "{{ secrets.letsencrypt.group_name }}"
+  with_items:
+    - "{{ letsencrypt.conf_dir }}"
+    - "{{ letsencrypt.lock_dir }}"
+    - "{{ letsencrypt.bin_dir }}"
+    - "{{ letsencrypt.log_dir }}"
+    - "{{ letsencrypt.certs_dir }}"
+- name: Put Letsencrypt configuration
+  template: 
+    src: "{{ role_path }}/templates/letsencrypt/conf/{{ item }}.j2"
+    dest: "{{ letsencrypt.conf_dir }}/{{ item }}"
+  with_items:
+    - digitalocean_creds.ini
+    - domains
+- name: Put Letsencrypt scripts
+  template: 
+    src: "{{ role_path }}/templates/letsencrypt/bin/{{ item }}.j2"
+    dest: "{{ letsencrypt.bin_dir }}/{{ item }}"
+  with_items:
+    - certs_renew.sh
+- name: Set executabe bit for certs_renew.sh
+  file:
+    path: "{{ letsencrypt.bin_dir }}/certs_renew.sh"
+    mode: "a+rx"
+- name: Schedule cron job
+  cron:
+    name: Renew letsencrypt certificates
+    special_time: weekly
+    job: "{{ letsencrypt.bin_dir }}/certs_renew.sh"
+- name: Oneshot acquire or renew certificates
+  command: "{{ letsencrypt.bin_dir }}/certs_renew.sh"
+

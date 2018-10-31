@@ -10,7 +10,7 @@
     - "{{ nginx.cache_dir }}"
 - name: Put Nginx configuration files
   template: 
-    src: "{{ role_path }}/templates/{{ item }}.conf.j2"
+    src: "{{ role_path }}/templates/nginx/{{ item }}.conf.j2"
     dest: "{{ nginx.conf_dir }}/{{ item }}.conf"
   with_items:
     - nginx
@@ -28,7 +28,7 @@
   when: not dhparam.stat.exists
 - name: Put htpasswd
   template:
-    src: "{{ role_path }}/templates/htpasswd.j2"
+    src: "{{ role_path }}/templates/nginx/htpasswd.j2"
     dest: "{{ nginx.sec_dir}}/htpasswd"
 - name: Start Nginx container
   docker_container:
@@ -50,4 +50,4 @@
       - "{{ nginx.conf_dir }}/:/etc/nginx/:ro"
       - "{{ nginx.cache_dir }}/:/var/lib/nginx/cache:rw"
       - "{{ nginx.sec_dir }}/:/etc/nginx_sec:ro"
-      - "{{ certbot.dir }}:/etc/letsencrypt:ro"
+      - "{{ letsencrypt.certs_dir }}:/etc/letsencrypt:ro"

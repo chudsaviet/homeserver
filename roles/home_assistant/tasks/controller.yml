@@ -1,0 +1,54 @@
+- name: Create Home Assistant group
+  group:
+    name: "{{ secrets.home_assistant.controller.group_name }}"
+    gid: "{{ secrets.home_assistant.controller.gid }}"
+- name: Create Home Assistant user
+  user:
+    name: "{{ secrets.home_assistant.controller.user_name }}"
+    comment: Home Assistant user
+    uid: "{{ secrets.home_assistant.controller.uid }}"
+    group: "{{ secrets.home_assistant.controller.group_name }}"
+    update_password: always
+    create_home: no
+- name: Create Home Assistant directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ secrets.home_assistant.controller.user_name }}"
+    group: "{{ secrets.home_assistant.controller.group_name }}"
+  with_items:
+    - "{{ home_assistant.conf_dir }}"
+    - "{{ home_assistant.conf_dir }}/deps"
+    - "{{ home_assistant.conf_storage_dir }}"
+- name: Put Home Assistant config
+  template:
+    src:
+      "{{ item }}"
+    dest:
+      "/{{ home_assistant.conf_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
+    owner: "{{ secrets.home_assistant.controller.user_name }}"
+    group: "{{ secrets.home_assistant.controller.group_name }}"
+  with_fileglob:
+    - config/*.j2
+- name: Create a Home Assistant network
+  docker_network:
+    name: "{{ home_assistant.network }}"
+    driver: bridge
+- name: Start Home Assistant container
+  docker_container:
+    name: "{{ home_assistant.container_name }}"
+    image: "homeassistant/home-assistant:{{ home_assistant.version }}"
+    pull: yes
+    recreate: yes
+    restart_policy: always
+    user: "{{ secrets.home_assistant.controller.uid }}:{{ secrets.home_assistant.controller.gid }}"
+    ports:
+      - "8123:8123"
+    networks:
+      - name: "{{ home_assistant.network }}"
+    env:
+      TZ: "{{ common.timezone }}"
+    volumes:
+      - "{{ home_assistant.conf_dir }}:/config:ro"
+      - "{{ home_assistant.conf_storage_dir }}:/config/.storage:rw"
+      - "/etc/localtime:/etc/localtime:ro"

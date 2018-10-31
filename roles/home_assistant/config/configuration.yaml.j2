@@ -1,0 +1,11 @@
+homeassistant:
+  name: {{ secrets.home_assistant.home.name }}
+  latitude: {{ secrets.home_assistant.home.latitude }}
+  longitude: {{ secrets.home_assistant.home.longitude }}
+  elevation: {{ secrets.home_assistant.home.elevation }}
+  unit_system: metric
+  time_zone: {{ common.timezone }}
+frontend:
+http:
+    port: {{ home_assistant.ui_port }}
+    base_url: https://shelter.homeunix.by/hass

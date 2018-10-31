@@ -10,7 +10,11 @@ nginx:
   conf_dir: "{{ common.services_path }}/nginx/conf"
   sec_dir: "{{ common.services_path }}/nginx/sec"
   cache_dir: "{{ common.services_path }}/nginx/cache"
-certbot:
-  dir: "{{ common.services_path }}/certbot"
-  shelter_cert: home_portal
-  unifi_cert: unifi_shelter_homeunix_by
+letsencrypt:
+  bin_dir: "{{ common.services_path }}/letsencrypt/bin"
+  conf_dir: "{{ common.services_path }}/letsencrypt/conf"
+  lock_dir: "{{ common.services_path }}/letsencrypt/lock"
+  log_dir: "{{ chest.services_path }}/letsencrypt/log"
+  certs_dir: "{{ chest.services_path }}/letsencrypt/certs"
+  # shelter_cert: home_portal
+  # unifi_cert: unifi_shelter_homeunix_by

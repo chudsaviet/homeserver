@@ -1,2 +1,2 @@
 ---
-- include: hass_core.yml
+- include: controller.yml

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+cat {{ letsencrypt.conf_dir }}/domains | \
+xargs -I @@ \
+    docker run --rm \
+        -u {{ secrets.letsencrypt.uid }}:{{ secrets.letsencrypt.gid }} \
+        -v {{ letsencrypt.conf_dir }}:/etc/certbot:ro \
+        -v {{ letsencrypt.lock_dir }}:/var/lib/letsencrypt:rw \
+        -v {{ letsencrypt.certs_dir }}:/etc/letsencrypt:rw \
+        -v {{ letsencrypt.log_dir }}:/var/log/letsencrypt:rw \
+        -v /etc/localtime:/etc/localtime:ro \
+        chudsaviet/certbot \
+        certonly \
+        --agree-tos \
+        --dns-digitalocean \
+        --dns-digitalocean-credentials /etc/certbot/digitalocean_creds.ini \
+        -d @@ \
+        --email {{ secrets.letsencrypt.owner_email }} \
+        --non-interactive \
+        --rsa-key-size 4096
