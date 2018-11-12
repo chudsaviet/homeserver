@@ -2,7 +2,5 @@ home_assistant:
   container_name: home_assistant
   version: "0.80.0"
   network: home_assistant
-  ui_port: 8412
   conf_dir: "{{ common.services_path }}/home_assistant/conf"
   conf_storage_dir: "{{ chest.services_path }}/home_assistant/conf_storage"
-  web_subdir: hass

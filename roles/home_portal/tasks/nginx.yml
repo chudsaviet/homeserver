@@ -32,7 +32,7 @@
     dest: "{{ nginx.sec_dir}}/htpasswd"
 - name: Start Nginx container
   docker_container:
-    name: nginx
+    name: "{{ nginx.container_name }}"
     image: nginx:mainline-alpine
     pull: yes
     recreate: yes
@@ -41,6 +41,7 @@
     networks:
       - name: "{{ nginx.network }}"
       - name: "{{ unifi.network }}"
+      - name: "{{ home_assistant.network }}"
     published_ports:
       - "80:80"
       - "443:443"

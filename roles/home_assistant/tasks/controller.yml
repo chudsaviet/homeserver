@@ -30,10 +30,6 @@
     group: "{{ secrets.home_assistant.controller.group_name }}"
   with_fileglob:
     - config/*.j2
-- name: Create a Home Assistant network
-  docker_network:
-    name: "{{ home_assistant.network }}"
-    driver: bridge
 - name: Start Home Assistant container
   docker_container:
     name: "{{ home_assistant.container_name }}"
@@ -43,7 +39,7 @@
     restart_policy: always
     user: "{{ secrets.home_assistant.controller.uid }}:{{ secrets.home_assistant.controller.gid }}"
     ports:
-      - "8123:8123"
+      - "{{ secrets.home_assistant.controller.ui_port }}:{{ secrets.home_assistant.controller.ui_port }}"
     networks:
       - name: "{{ home_assistant.network }}"
     env:

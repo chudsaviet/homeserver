@@ -1,2 +1,6 @@
 ---
+- name: Create a Home Assistant network
+  docker_network:
+    name: "{{ home_assistant.network }}"
+    driver: bridge
 - include: controller.yml
