@@ -5,4 +5,7 @@ all:
     god:
       hosts:
         aldan:
+    octoprint:
+      hosts:
+        octopi:
 

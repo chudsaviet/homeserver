@@ -2,6 +2,11 @@
   timezone:
     hwclock: UTC
     name: "{{ common.timezone }}"
+- name: Remove ntpd (package 'ntp')
+  apt:
+    name: ntp
+    state: absent
+    update_cache: yes
 - name: Install chrony
   apt:
     name: chrony

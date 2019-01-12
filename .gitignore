@@ -1,3 +1,4 @@
 secrets.yml
 *.retry
 *.password
+*_facts.json

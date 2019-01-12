@@ -1,0 +1,8 @@
+---
+ansible_host: "{{ secrets.octopi.host }}"
+ansible_port: "{{ secrets.octopi.ssh_port }}"
+ansible_user: "{{ secrets.octopi.user_name }}"
+ansible_become: true
+# ansible_become_pass: "{{ secrets.aldan.user_password }}"
+host_arch: armhf
+# chest_uuid: "{{ secrets.chest.uuid }}"

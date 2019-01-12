@@ -6,3 +6,9 @@
     - {role: 'chest', tags: 'chest'}
     - {role: 'home_assistant', tags: 'home_assistant'}
     - {role: 'home_portal', tags: 'home_portal'}
+- hosts: octopi
+  vars_files:
+    - secrets.yml
+  roles:
+    - {role: 'common', tags: 'common'}
+    - {role: 'octoprint', tags: 'octoprint'}

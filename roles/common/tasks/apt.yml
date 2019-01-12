@@ -1,6 +1,6 @@
 - name: Install sources.list for Apt
   template:
-    src: "templates/{{ ansible_distribution }}.sources.list.j2"
+    src: "templates/{{ ansible_lsb.id }}.sources.list.j2"
     dest: /etc/apt/sources.list
 - name: Upgrade all packages to the latest version
   apt:
