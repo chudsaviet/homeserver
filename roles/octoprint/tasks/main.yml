@@ -1,2 +1,4 @@
 ---
 - include: octoprint.yml
+- include: ffmpeg.yml
+- include: nginx.yml

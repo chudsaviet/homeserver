@@ -1,0 +1,16 @@
+- name: Start Nginx container
+  docker_container:
+    name: nginx
+    image: nginx:mainline-alpine
+    pull: yes
+    recreate: yes
+    restart_policy: always
+    user: "root:root"
+    published_ports:
+      - "81:80"
+    env:
+      TZ: "{{ common.timezone }}"
+    volumes:
+      # - "/opt/nginx/conf/:/etc/nginx/:ro"
+      - "/tmp/nginx/cache/:/var/lib/nginx/cache:rw"
+      - "/tmp/rpi_cam/:/usr/share/nginx/html/rpi_cam/:ro"
