@@ -1,3 +1,10 @@
+- name: Put Nginx configuration files
+  template: 
+    src: "{{ role_path }}/templates/nginx/{{ item }}.conf.j2"
+    dest: "{{ nginx.conf_dir }}/{{ item }}.conf"
+  with_items:
+    - nginx
+    - octoprint
 - name: Start Nginx container
   docker_container:
     name: nginx
@@ -6,11 +13,14 @@
     recreate: yes
     restart_policy: always
     user: "root:root"
+    networks:
+      - name: "{{ octoprint.network }}"
     published_ports:
-      - "81:80"
+      - "80:80"
+      - "443:443"
     env:
       TZ: "{{ common.timezone }}"
     volumes:
-      # - "/opt/nginx/conf/:/etc/nginx/:ro"
+      - "/opt/nginx/conf/:/etc/nginx/:ro"
       - "/tmp/nginx/cache/:/var/lib/nginx/cache:rw"
-      - "/tmp/rpi_cam/:/usr/share/nginx/html/rpi_cam/:ro"
+      - "/tmp/rpi_cam/:/tmp/rpi_cam/:ro"

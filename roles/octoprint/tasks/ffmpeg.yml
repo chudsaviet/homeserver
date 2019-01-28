@@ -1,3 +1,15 @@
+- name: Create FFMPEG group
+  group:
+    name: "{{ secrets.ffmpeg.group_name }}"
+    gid: "{{ secrets.ffmpeg.gid }}"
+- name: Create FFMPEG user
+  user:
+    name: "{{ secrets.ffmpeg.user_name }}"
+    comment: FFMPEG user
+    uid: "{{ secrets.ffmpeg.uid }}"
+    group: "{{ secrets.ffmpeg.group_name }}"
+    update_password: always
+    create_home: no
 - name: Load Raspberry Pi Camera kernel module
   # TODO: load module automatically at boot
   modprobe:
@@ -6,17 +18,27 @@
 - name: Install FFMPEG container
   docker_container:
     name: ffmpeg
-    image: chudsaviet/ffmpeg-omx-rpi-docker:4.1
-    pull: yes
+    image: ffmpeg-omx-rpi-docker
+    # pull: yes
     restart_policy: always
+    user: "{{ secrets.ffmpeg.uid }}:{{ secrets.ffmpeg.gid }}"
     network_mode: host
     devices:
       - /dev/video0:/dev/video0:rw
       - /dev/vchiq:/dev/vchiq:rw
+      - /dev/snd:/dev/snd:rw
     volumes:
       - /opt/vc/lib:/opt/vc/lib:ro
       - /tmp/rpi_cam:/tmp/rpi_cam:rw
+      - /etc/asound.conf:/etc/asound.conf:ro
     env:
       TZ: "{{ common.timezone }}"
       LD_LIBRARY_PATH: "/opt/vc/lib"
-    command: "ffmpeg -y -f v4l2 -video_size 1280x720 -framerate 24 -i /dev/video0 -vcodec h264_omx -profile:v high -zerocopy 1 -keyint_min 0 -b:v 1024k -flags +cgop -g 24 -f hls -hls_time 1 -hls_flags delete_segments -hls_allow_cache 1 -hls_segment_type fmp4 -hls_list_size 16 -hls_delete_threshold 16 /tmp/rpi_cam/rpi_cam.m3u8"
+    command: "ffmpeg -y 
+              -f v4l2 -video_size 1280x720 -framerate 24 -i /dev/video0 
+              -f alsa -ac 1 -ar 48000 -i hw:1
+              -filter:a 'volume=25dB'
+              -acodec libfdk_aac -profile:a aac_he -b:a 32k
+              -vcodec h264_omx -profile:v high -zerocopy 1 -keyint_min 0 -b:v 1024k -flags +cgop -g 24 
+              -f hls -hls_time 2 -hls_flags delete_segments -hls_allow_cache 1 -hls_segment_type fmp4 
+              -hls_list_size 16 -hls_delete_threshold 16 /tmp/rpi_cam/rpi_cam.m3u8"

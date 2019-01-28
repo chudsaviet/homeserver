@@ -1,14 +1,25 @@
+- name: Create Octoprint group
+  group:
+    name: "{{ secrets.octoprint.group_name }}"
+    gid: "{{ secrets.octoprint.gid }}"
+- name: Create Octoprint user
+  user:
+    name: "{{ secrets.octoprint.user_name }}"
+    comment: Octoprint user
+    uid: "{{ secrets.octoprint.uid }}"
+    group: "{{ secrets.octoprint.group_name }}"
+    update_password: always
+    create_home: no
 - name: Install Octoprint container
   docker_container:
     name: octoprint
-    image: nunofgs/octoprint:1.3.9
+    image: chudsaviet/octoprint-docker-light:latest
     pull: yes
     restart_policy: always
-    network_mode: host
     #devices:
     #  - /dev/ttyACM0:/dev/ttyACM0:rw
-    # TODO: de-publish default port 80
-    #published_ports:
-    #  - "5000:5000"
+    networks:
+      - name: "{{ octoprint.network }}"
+    user: "{{ secrets.octoprint.uid }}:{{ secrets.octoprint.gid }}"
     env:
       TZ: "{{ common.timezone }}"
