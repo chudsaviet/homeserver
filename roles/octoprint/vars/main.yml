@@ -1,2 +1,4 @@
 octoprint:
   network: octoprint
+nginx:
+  conf_dir: /opt/nginx

@@ -8,6 +8,7 @@
     comment: FFMPEG user
     uid: "{{ secrets.ffmpeg.uid }}"
     group: "{{ secrets.ffmpeg.group_name }}"
+    group: "video"
     update_password: always
     create_home: no
 - name: Load Raspberry Pi Camera kernel module
@@ -21,7 +22,7 @@
     image: ffmpeg-omx-rpi-docker
     # pull: yes
     restart_policy: always
-    user: "{{ secrets.ffmpeg.uid }}:{{ secrets.ffmpeg.gid }}"
+    # user: "{{ secrets.ffmpeg.uid }}:{{ secrets.ffmpeg.gid }}"
     network_mode: host
     devices:
       - /dev/video0:/dev/video0:rw

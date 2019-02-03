@@ -1,6 +1,6 @@
 - name: Put Nginx configuration files
   template: 
-    src: "{{ role_path }}/templates/nginx/{{ item }}.conf.j2"
+    src: "{{ role_path }}/templates/nginx/{{ item }}.conf"
     dest: "{{ nginx.conf_dir }}/{{ item }}.conf"
   with_items:
     - nginx
@@ -17,10 +17,9 @@
       - name: "{{ octoprint.network }}"
     published_ports:
       - "80:80"
-      - "443:443"
     env:
       TZ: "{{ common.timezone }}"
     volumes:
-      - "/opt/nginx/conf/:/etc/nginx/:ro"
-      - "/tmp/nginx/cache/:/var/lib/nginx/cache:rw"
-      - "/tmp/rpi_cam/:/tmp/rpi_cam/:ro"
+      - "/opt/nginx/conf:/etc/nginx/conf:ro"
+      - "/tmp/nginx/cache:/var/lib/nginx/cache:rw"
+      - "/tmp/rpi_cam:/tmp/rpi_cam:ro"

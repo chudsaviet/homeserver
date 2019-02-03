@@ -10,16 +10,20 @@
     group: "{{ secrets.octoprint.group_name }}"
     update_password: always
     create_home: no
+- name: Create Octoprint network
+  docker_network:
+    name: "{{ octoprint.network }}"
+    driver: bridge
 - name: Install Octoprint container
   docker_container:
     name: octoprint
     image: chudsaviet/octoprint-docker-light:latest
-    pull: yes
+    # pull: yes
     restart_policy: always
     #devices:
     #  - /dev/ttyACM0:/dev/ttyACM0:rw
     networks:
       - name: "{{ octoprint.network }}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     user: "{{ secrets.octoprint.uid }}:{{ secrets.octoprint.gid }}"
-    env:
-      TZ: "{{ common.timezone }}"
