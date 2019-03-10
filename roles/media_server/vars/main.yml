@@ -1,0 +1,7 @@
+plex:
+  database_path: "{{ chest.services_path }}/plex"
+  transcode_path: "{{ chest.temp_path }}/plex_transcode"
+  library_path: "{{ chest.local_path }}/library"
+  network: plex
+  container_name: plex
+  container_image: "plexinc/pms-docker:1.14.1.5488-cc260c476"

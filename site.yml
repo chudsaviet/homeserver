@@ -6,6 +6,7 @@
     - {role: 'chest', tags: 'chest'}
     - {role: 'home_assistant', tags: 'home_assistant'}
     - {role: 'home_portal', tags: 'home_portal'}
+    - {role: 'media_server', tags: 'media_server'}
 - hosts: octopi
   vars_files:
     - secrets.yml

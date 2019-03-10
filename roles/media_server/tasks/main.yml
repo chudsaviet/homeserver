@@ -1,0 +1,55 @@
+- name: Create Plex group
+  group:
+    name: "{{ secrets.plex.group_name }}"
+    gid: "{{ secrets.plex.gid }}"
+- name: Create Plex user
+  user:
+    name: "{{ secrets.plex.user_name }}"
+    comment: Plex media server user
+    uid: "{{ secrets.plex.uid }}"
+    group: "{{ secrets.plex.group_name }}"
+    update_password: always
+    create_home: no
+- name: Create Plex directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ secrets.plex.user_name }}"
+    group: "{{ secrets.plex.group_name }}"
+  with_items:
+    - "{{ plex.database_path }}"
+    - "{{ plex.transcode_path }}"
+    - "{{ plex.library_path }}"
+- name: Create a Plex network
+  docker_network:
+    name: "{{ plex.network }}"
+    driver: bridge
+- name: Create and start Plex container
+  docker_container:
+    name: "{{ plex.container_name }}"
+    image: "{{ plex.container_image }}"
+    purge_networks: yes
+    networks:
+      - name: "{{ plex.network }}"
+    published_ports:
+      - 32400:32400/tcp
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    env:
+      HOSTNAME: "{{ ansible_hostname }}"
+      TZ: "{{ common.timezone }}"
+      PLEX_UID: "{{ secrets.plex.uid }}"
+      PLEX_GID: "{{ secrets.plex.gid }}"
+      ADVERTISE_IP: "{{ ansible_default_ipv4.address }}"
+      #PLEX_CLAIM: ""
+    volumes:
+      - "{{ plex.database_path }}:/config:rw"
+      - "{{ plex.transcode_path }}:/transcode:rw"
+      - "{{ plex.library_path }}:/data:ro"
+

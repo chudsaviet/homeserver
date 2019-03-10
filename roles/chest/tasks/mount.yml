@@ -10,3 +10,16 @@
     fstype: ext4
     opts: noatime
     state: mounted
+- name: Create 'temp' mountpoint
+  file:
+    path: "{{ chest.temp_path }}"
+    state: directory
+    mode: "a+rwx"
+- name: Mount 'temp' partition
+  mount:
+    path: "{{ chest.temp_path }}"
+    src: UUID="{{ secrets.temp.uuid }}"
+    fstype: xfs
+    opts: noatime
+    state: mounted
+
