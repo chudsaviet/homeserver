@@ -1,6 +1,6 @@
 unifi:
   container_name: unifi
-  container_image: "jacobalberty/unifi:5.9"
+  container_image: "jacobalberty/unifi:5.10"
   network: unifi
   path: "{{ chest.services_path }}/unifi"
   run_dir_path: "{{ common.services_path }}/unifi_run"
