@@ -28,6 +28,7 @@
   docker_container:
     name: "{{ plex.container_name }}"
     image: "{{ plex.container_image }}"
+    restart_policy: always
     purge_networks: yes
     networks:
       - name: "{{ plex.network }}"
