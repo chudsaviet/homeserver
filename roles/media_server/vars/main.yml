@@ -4,4 +4,4 @@ plex:
   library_path: "{{ chest.local_path }}/library"
   network: plex
   container_name: plex
-  container_image: "plexinc/pms-docker:1.15.3.876-ad6e39743"
+  container_image: "plexinc/pms-docker:1.16.5.1554-1e5ff713d"

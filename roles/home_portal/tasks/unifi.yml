@@ -56,10 +56,10 @@
       - 8080:8080/tcp # Device command/control
       - 3478:3478/udp # STUN protocol
     env:
-      RUNAS_UID0: false
+      RUNAS_UID0: "false"
       UNIFI_UID: "{{ secrets.unifi.uid }}"
       UNIFI_GID: "{{ secrets.unifi.gid }}"
-      BIND_PRIV: false
+      BIND_PRIV: "false"
       TZ: "{{ common.timezone }}"
     volumes:
       - "{{ unifi.path }}:/unifi:rw"
