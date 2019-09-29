@@ -3,4 +3,3 @@
 - include: time.yml
 - include: mail.yml
 - include: cron.yml
-- include: docker.yml

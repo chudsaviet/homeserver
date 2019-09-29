@@ -1,0 +1,10 @@
+- name: Install Unifi repo key
+  apt_key:
+    url: https://dl.ui.com/unifi/unifi-repo.gpg
+- name: Add Unifi repository
+  apt_repository:
+    repo: "deb [arch={{ host_arch }}] https://www.ui.com/downloads/unifi/debian stable ubiquiti"
+- name: Install Unifi controller
+  apt:
+    name: unifi
+    update_cache: yes

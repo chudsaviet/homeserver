@@ -5,7 +5,7 @@
 - name: Create Letsencrypt user
   user:
     name: "{{ secrets.letsencrypt.user_name }}"
-    comment: Letsencrypt controller user
+    comment: Letsencrypt user
     uid: "{{ secrets.letsencrypt.uid }}"
     group: "{{ secrets.letsencrypt.group_name }}"
     update_password: always

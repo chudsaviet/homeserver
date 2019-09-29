@@ -1,0 +1,4 @@
+---
+- include: java.yml
+- include: mongo.yml
+- include: unifi.yml

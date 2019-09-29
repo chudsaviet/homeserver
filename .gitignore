@@ -3,3 +3,5 @@ secrets.yml
 *.password
 *_facts.json
 *.code-workspace
+*.iml
+.idea

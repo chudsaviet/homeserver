@@ -1,0 +1,4 @@
+- name: Install haveged
+  apt:
+    name: haveged
+    update_cache: yes
