@@ -3,6 +3,7 @@
     name:
       - msmtp
       - msmtp-mta
+      - s-nail
     update_cache: yes
 - name: Put msmtp MTA config file
   template:

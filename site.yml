@@ -7,16 +7,6 @@
     - {role: 'common', tags: 'common'}
     - {role: 'docker', tags: 'docker'}
     - {role: 'chest', tags: 'chest'}
-    - {role: 'home_assistant', tags: 'home_assistant'}
-    - {role: 'home_portal', tags: 'home_portal'}
+    #- {role: 'home_assistant', tags: 'home_assistant'}
+    #- {role: 'home_portal', tags: 'home_portal'}
     - {role: 'media_server', tags: 'media_server'}
-- hosts: unifi
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-  vars_files:
-    - secrets.yml
-  roles:
-    - {role: 'common', tags: 'common'}
-    - {role: 'raspberrypi', tags: 'raspberrypi'}
-    - {role: 'docker', tags: 'docker'}
-    - {role: 'unifi', tags: 'unifi'}

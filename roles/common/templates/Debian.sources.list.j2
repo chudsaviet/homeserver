@@ -1,0 +1,11 @@
+deb http://deb.debian.org/debian/ {{ ansible_lsb.codename }} main contrib
+deb-src http://deb.debian.org/debian/ {{ ansible_lsb.codename }} main contrib
+
+deb http://security.debian.org/debian-security {{ ansible_lsb.codename }}/updates main contrib
+deb-src http://security.debian.org/debian-security {{ ansible_lsb.codename }}/updates main contrib
+
+deb http://deb.debian.org/debian/ {{ ansible_lsb.codename }}-updates main contrib
+deb-src http://deb.debian.org/debian/ {{ ansible_lsb.codename }}-updates main contrib
+
+deb http://deb.debian.org/debian {{ ansible_lsb.codename }}-backports main contrib
+deb-src http://deb.debian.org/debian {{ ansible_lsb.codename }}-backports main contrib

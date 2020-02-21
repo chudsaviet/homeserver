@@ -1,6 +1,0 @@
----
-ansible_host: "{{ secrets.unifi.host }}"
-ansible_port: "{{ secrets.unifi.ssh_port }}"
-ansible_user: "{{ secrets.unifi.user_name }}"
-ansible_become: true
-host_arch: armhf

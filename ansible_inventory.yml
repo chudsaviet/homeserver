@@ -3,6 +3,3 @@ all:
     god:
       hosts:
         aldan:
-    unifi:
-      hosts:
-        unifi:
